@@ -32,5 +32,4 @@ const kTextInputField=InputDecoration(
     borderSide: BorderSide(color: Color(0xffC9C9C9),width: 2.0),
   ),
 
-  prefixIcon: Icon(Icons.email),
 );
