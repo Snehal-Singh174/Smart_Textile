@@ -37,11 +37,32 @@ class _RegistrationBodyState extends State<RegistrationBody> {
   TextEditingController pincodecontroller = TextEditingController();
   TextEditingController citycontroller = TextEditingController();
   TextEditingController statecontroller = TextEditingController();
+  var result;
 
-  Future<Address> getData() async{
-    var uri =
-    Uri.https('http://www.postalpincode.in', '/api/pincode/${pincodecontroller.text}',);
-    final response = await http.get(uri);
+  predictGender() async {
+//    var pincode = int.parse(name);
+//    print(pincode);
+    //var url = "https://api.genderize.io/?name=$name";
+    var url = "https://pincode.saratchandra.in/api/pincode/500022";
+    var res = await http.get(url);
+    var body = jsonDecode(res.body);
+    print(body);
+
+    result = "Gender: ${body['district']}, Probability: ${body['state_name']}";
+    //result = "City: ${body['District']}, State: ${body['State']}";
+    print(result);
+
+    setState(() {});
+  }
+
+
+  /*Future<Address> getData() async{
+    print("Hello World");
+    print("Hello World");
+//    var uri =
+//    http.get("www.postalpincode.in/api/pincode/${pincodecontroller.text}",);
+    final response = await http.get("https://www.postalpincode.in/api/pincode/${pincodecontroller.text}");
+    print(response);
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
       // then parse the JSON.
@@ -56,8 +77,7 @@ class _RegistrationBodyState extends State<RegistrationBody> {
   @override
   void initstate(){
     super.initState();
-    futureaddress = getData();
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -108,6 +128,10 @@ class _RegistrationBodyState extends State<RegistrationBody> {
               ),
               TextFieldContainer(
                 child: TextFormField(
+                  onChanged: (val){
+                    print(pincodecontroller.text.runtimeType);
+                    predictGender();
+                  },
                   controller: pincodecontroller,
                   decoration: kTextInputField.copyWith(
                     hintText: "Pincode".toUpperCase()
@@ -148,6 +172,7 @@ class _RegistrationBodyState extends State<RegistrationBody> {
                       borderRadius: BorderRadius.circular(26.0),
                       side: BorderSide(color: kPrimaryColor)),
                   onPressed: () {
+
                     Navigator.push(context, MaterialPageRoute(builder: (context)=>RegisterPage2()));
                   },
                   color: kPrimaryColor,
